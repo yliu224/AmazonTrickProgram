@@ -5,48 +5,37 @@ import java.util.Scanner;
  */
 public class mainApp {
     public static void main(String args[]){
-        String output;
-        String strIn;
-
-        Scanner in = new Scanner(System.in);
-        while (true){
-            System.out.println("Enter the question strings");
-            strIn = in.nextLine();
-            if(strIn.equals("Exit")) return;
-            for(String s:strIn.split(",")){
-                System.out.println(printNo(s));
-            }
-
-            System.out.println("Enter the answer");
-            output = in.nextLine();
-            System.out.println(printStr(output));
-            System.out.println();
-        }
-
+        Solution s=new Solution();
+        System.out.println(s.computeArea(-2,-2,2,2,-1,-1,1,1));
     }
-    public static String printNo(String str){
-        str=str.toUpperCase();
-        StringBuilder sb=new StringBuilder();
-        for(char c:str.toCharArray()){
-            if(c>='A'&&c<='Z'){
-                if(sb.length()>0&&sb.charAt(sb.length()-1)!='\t'){
-                    sb.append('\t');
-                }
-                sb.append((c-'A'+1)+"\t");
-            }
-            else
-                sb.append(c+"\t");
+}
+class Solution {
+    class Node {
+        public int x;
+        public int y;
+
+        public Node(int x, int y) {
+            this.x = x;
+            this.y = y;
         }
-        return sb.toString();
     }
-    public static String printStr(String str){
-        if(str.equals("")) return "";
-        StringBuilder sb=new StringBuilder();
-        for(String s:str.split(",")){
-            int n=Integer.valueOf(s)-1;
-            if(n>=26) n=n-26;
-            sb.append((char)(n+'A'));
-        }
-        return sb.toString();
+    public int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
+        return hasOverlap(new Node(A,B),new Node(C,D),new Node(E,F),new Node(G,H));
+    }
+    public int hasOverlap(Node A, Node B, Node C, Node D)
+    {
+        int Xmax=Math.max(A.x,C.x);
+        int Xmin=Math.min(B.x,D.x);
+        int x=Xmin-Xmax;
+
+        int Ymax=Math.max(A.y,C.y);
+        int Ymin=Math.max(B.y,D.y);
+        int y=Ymin-Ymax;
+
+        int a1=(B.x-A.x)*(B.y-A.y);
+        int a2=(D.x-C.x)*(D.y-C.y);
+
+        if(x<0||y<0) return a1+a2;
+        return a2-(x*y)+a1;
     }
 }
